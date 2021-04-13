@@ -4,25 +4,25 @@ library(FactoMineR)
 library(factoextra)
 library(ggplot2)
 library(corrplot)
-#Tracer les boites à moustache
+#Tracer les boites Ã  moustache
 B= Voitures[,2:8]
 B
 as.matrix(B)
 summary(B)
 boxplot(B[,2:7])
-#la fonction PCA() normalise (c-à-d centre et réduit)*
-  #la matrice des données automatiquement pendant l'ACP.           
-  #donc ç'est pas la peine de faire cette transformation     
-  #avant la réalisation de l'ACP.                                
+#la fonction PCA() normalise (c-Ã -d centre et rÃ©duit)*
+  #la matrice des donnÃ©es automatiquement pendant l'ACP.           
+  #donc Ã§'est pas la peine de faire cette transformation     
+  #avant la rÃ©alisation de l'ACP.                                
 n=PCA(B,scale.unit=TRUE,quali.sup=1,ncp=5,graph=TRUE)
 n
-#Les valeurs propres de la matrice R sont données par:                                        
+#Les valeurs propres de la matrice R sont donnÃ©es par:                                        
 eig.val
 fviz_eig(n)
 fviz_pca_var(n)
-#Visualiser les contributions des variables sur les deux premières composantes principales
+#Visualiser les contributions des variables sur les deux premiÃ¨res composantes principales
 fviz_contrib(n, choice = "var", axes = 1, top = 5)
-#Colorer les variables en fonction de la qualité de représentation
+#Colorer les variables en fonction de la qualitÃ© de reprÃ©sentation
 fviz_pca_var(n, col.var = "cos2", 
              gradient.cols = c("green", "red"),
              repel = TRUE)
@@ -30,8 +30,8 @@ fviz_pca_var(n, col.var = "cos2",
 fviz_pca_var(n, col.var = "contrib",
              gradient.cols = c("green", "red"),
              repel = TRUE)
-#Critère du coude (éboulis des valeurs propres):
-# On sélectionne les axes avant le décrochement:
+#CritÃ¨re du coude (Ã©boulis des valeurs propres):
+# On sÃ©lectionne les axes avant le dÃ©crochement:
 coude=fviz_eig(n, choice = c("eigenvalue"),
                barfill = "red",  barcolor = "green",
                linecolor = "blue",
@@ -39,22 +39,22 @@ coude=fviz_eig(n, choice = c("eigenvalue"),
                addlabels = TRUE,
                main = "Eboulis des valeurs propres")
 coude
-#====> Le nombre de composantes à retenir est deux.
+#====> Le nombre de composantes Ã  retenir est deux.
 
 #*****************Etude des variables*********************#
 #********************************************************#
 variables=get_pca_var(n)
-variables$coord #les coordonnées des variables sur les composantes principales
-variables$cor#corrélations entre les variables et les composantes
-variables$cos2  #qualité de représentation des variables sur chaque composante
+variables$coord #les coordonnÃ©es des variables sur les composantes principales
+variables$cor#corrÃ©lations entre les variables et les composantes
+variables$cos2  #qualitÃ© de reprÃ©sentation des variables sur chaque composante
 variables$contrib #contributions des variables aux composantes principales (en %)
 eig.val=get_eigenvalue(n) #Pour obtenir les valeurs propres (de la matrice R)
 par(mfrow=c(1,3))
 corrplot(variables$cor, is.corr=TRUE)
 corrplot(variables$cos2, is.corr=FALSE)
 corrplot(variables$contrib, is.corr=FALSE)
-#Calcul de la qualité de représentation des variables sur 
-#les deux premières composantes qui est égale
+#Calcul de la qualitÃ© de reprÃ©sentation des variables sur 
+#les deux premiÃ¨res composantes qui est Ã©gale
 Q.cylindre=sum(variables$cos2[1,1:2])
 Q.cylindre
 Q.puissance=sum(variables$cos2[2,1:2])
@@ -65,23 +65,23 @@ Q.poid=sum(variables$cos2[4,1:2])
 Q.poid
 Q.largeur=sum(variables$cos2[5,1:2])
 Q.largeur
-#On peut visualiser ces qualités de représentation sur 
-#les deux premières composantes principales avec la commande:
+#On peut visualiser ces qualitÃ©s de reprÃ©sentation sur 
+#les deux premiÃ¨res composantes principales avec la commande:
 
 Qu_2_axes=fviz_cos2(n, choice = "var", axes =1:2,
                     fill = "green")
 Qu_2_axes
-#Visualiser les contributions des variables à la première 
+#Visualiser les contributions des variables Ã  la premiÃ¨re 
 #composante principale
 fviz_contrib(n, choice = "var", axes = 1, top = 5)
-#Visualiser les contributions des variables à la deuxième 
+#Visualiser les contributions des variables Ã  la deuxiÃ¨me 
 #composante principale
 fviz_contrib(n, choice = "var", axes = 2, top = 5)
 #Visualiser les contributions des variables sur les deux
-#premières composantes principales
+#premiÃ¨res composantes principales
 fviz_contrib(n, choice = "var", axes = 1:2, top = 5)
-#Colorer les variables en fonction de la qualité
-#de représentation
+#Colorer les variables en fonction de la qualitÃ©
+#de reprÃ©sentation
 fviz_pca_var(n, col.var = "cos2", 
              gradient.cols = c("green", "red"),
              repel = TRUE)
@@ -96,28 +96,28 @@ fviz_pca_var(n, col.var = "contrib",
 
 #Carte des voitures:
 fviz_pca_ind(n, col.var = "black")
-#Les résultats de l'ACP concernant les voiture sont 
-#obtenus à l’aide de la fonction "get_pca_ind()"
+#Les rÃ©sultats de l'ACP concernant les voiture sont 
+#obtenus Ã  lâ€™aide de la fonction "get_pca_ind()"
 voitures=get_pca_ind(n)
 voitures
-#Coordonnées des voitures sur les composantes principales
+#CoordonnÃ©es des voitures sur les composantes principales
 
 voitures$coord       #round(voitures$coord,2)
 
-#Qualité de représentation des voitures
+#QualitÃ© de reprÃ©sentation des voitures
 
 voitures$cos2   
 
 #Contribution des voitures aux composantes principales (en %)
 
 voitures$contrib     #round(voitures$contrib,3) 
-#colorer la carte des voitures en fonction de la qualité
-#de représentation
+#colorer la carte des voitures en fonction de la qualitÃ©
+#de reprÃ©sentation
 
 fviz_pca_ind (n, col.ind = "cos2",
               gradient.cols = c("green", "blue", "red"),
               repel = TRUE )
-#Représentation simultanée des variables et des voitures
+#ReprÃ©sentation simultanÃ©e des variables et des voitures
 
 fviz_pca_biplot(n, repel = TRUE,
                 col.var = "red",  
